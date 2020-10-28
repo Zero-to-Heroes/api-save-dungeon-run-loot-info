@@ -27,6 +27,11 @@ export default async (event): Promise<any> => {
 		}
 
 		const input: Input = JSON.parse(event.body);
+
+		if (!input.appVersion) {
+			console.log('old version, not doing anything');
+			return;
+		}
 		const mysqlBgs = await getConnection();
 		const creationDate = formatDate(new Date());
 		if (input.startingHeroPower) {

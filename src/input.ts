@@ -13,6 +13,7 @@ export interface Input {
 	readonly currentWins: number;
 	readonly currentLosses: number;
 	readonly rating: number;
+	readonly appVersion: string;
 }
 
 export interface OptionBundle {
