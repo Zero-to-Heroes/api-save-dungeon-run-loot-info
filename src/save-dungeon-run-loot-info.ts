@@ -28,6 +28,10 @@ export default async (event): Promise<any> => {
 
 		const input: Input = JSON.parse(event.body);
 
+		if (input.userName === 'daedin') {
+			console.log('DEBUG daedin');
+		}
+
 		if (!input.appVersion) {
 			console.log('old version, not doing anything');
 			return;
