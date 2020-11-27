@@ -15,7 +15,7 @@ Resources:
         Properties:
             Handler: save-dungeon-run-loot-info.default
             Runtime: nodejs10.x
-            Timeout: 3
+            Timeout: 30
             MemorySize: 128
             ReservedConcurrentExecutions: 40
             CodeUri: ./dist/save-dungeon-run-loot-info

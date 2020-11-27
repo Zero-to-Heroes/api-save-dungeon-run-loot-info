@@ -58,7 +58,7 @@ export default async (event): Promise<any> => {
 		};
 
 		console.log('sending back success reponse', response);
-		
+
 		return response;
 	} catch (e) {
 		console.error('issue saving sample', e);
@@ -92,6 +92,7 @@ const saveStartingHeroPower = async (input: Input, creationDate: string, mysqlBg
 		`;
 		console.log('running query', query);
 		await mysqlBgs.query(query);
+		console.log('executed query');
 	}
 };
 
@@ -172,9 +173,10 @@ const saveTreasures = async (input: Input, creationDate: string, mysqlBgs): Prom
 
 const saveRewards = async (input: Input, creationDate: string, mysqlBgs): Promise<void> => {
 	if (input.rewards?.Rewards?.length) {
-		const values = input.rewards.Rewards
-			.map(reward => `('${input.type}', '${creationDate}', '${input.reviewId}', '${input.runId}', '${input.userId}', '${input.userName}', ${reward.Type}, ${reward.Amount}, ${reward.BoosterId}, ${input.currentWins}, ${input.currentLosses}, ${input.rating})`)
-			.join('\n,')
+		const values = input.rewards.Rewards.map(
+			reward =>
+				`('${input.type}', '${creationDate}', '${input.reviewId}', '${input.runId}', '${input.userId}', '${input.userName}', ${reward.Type}, ${reward.Amount}, ${reward.BoosterId}, ${input.currentWins}, ${input.currentLosses}, ${input.rating})`,
+		).join('\n,');
 
 		const query = `
 			INSERT INTO dungeon_run_rewards
