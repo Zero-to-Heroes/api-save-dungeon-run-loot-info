@@ -14,7 +14,7 @@ export default async (event): Promise<any> => {
 		'Access-Control-Allow-Origin': event.headers.Origin || event.headers.origin,
 	};
 	try {
-		console.log('processing event');
+		// console.log('processing event');
 		// Preflight
 		if (!event.body) {
 			const response = {
@@ -22,7 +22,7 @@ export default async (event): Promise<any> => {
 				body: null,
 				headers: headers,
 			};
-			console.log('sending back success response without body', response);
+			// console.log('sending back success response without body', response);
 			return response;
 		}
 
@@ -57,7 +57,7 @@ export default async (event): Promise<any> => {
 			headers: headers,
 		};
 
-		console.log('sending back success reponse', response);
+		// console.log('sending back success reponse', response);
 
 		return response;
 	} catch (e) {
@@ -90,9 +90,9 @@ const saveStartingHeroPower = async (input: Input, creationDate: string, mysqlBg
 				LIMIT 1
 			)				
 		`;
-		console.log('running query', query);
+		// console.log('running query', query);
 		await mysqlBgs.query(query);
-		console.log('executed query');
+		// console.log('executed query');
 	}
 };
 
@@ -113,7 +113,7 @@ const saveSignatureTreasure = async (input: Input, creationDate: string, mysqlBg
 				LIMIT 1
 			)				
 		`;
-		console.log('running query', query);
+		// console.log('running query', query);
 		await mysqlBgs.query(query);
 	}
 };
@@ -144,7 +144,7 @@ const saveLootBundles = async (input: Input, creationDate: string, mysqlBgs): Pr
 			)
 			
 		`;
-		console.log('running query', query);
+		// console.log('running query', query);
 		await mysqlBgs.query(query);
 	}
 };
@@ -166,13 +166,14 @@ const saveTreasures = async (input: Input, creationDate: string, mysqlBgs): Prom
 				LIMIT 1
 			)
 		`;
-		console.log('running query', query);
+		// console.log('running query', query);
 		await mysqlBgs.query(query);
 	}
 };
 
 const saveRewards = async (input: Input, creationDate: string, mysqlBgs): Promise<void> => {
 	if (input.rewards?.Rewards?.length) {
+		console.log('rewards', input.rewards, input);
 		const values = input.rewards.Rewards.map(
 			reward =>
 				`('${input.type}', '${creationDate}', '${input.reviewId}', '${input.runId}', '${input.userId}', '${input.userName}', ${reward.Type}, ${reward.Amount}, ${reward.BoosterId}, ${input.currentWins}, ${input.currentLosses}, ${input.rating})`,
