@@ -31,5 +31,5 @@ export interface DuelsRewardsInfo {
 export interface DuelsRewardInfo {
 	readonly Type: RewardType;
 	readonly Amount: number;
-	readonly BoosterId: BoosterType;
+	readonly BoosterId: BoosterType | string;
 }
