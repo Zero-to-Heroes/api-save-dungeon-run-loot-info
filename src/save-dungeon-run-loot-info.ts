@@ -35,12 +35,22 @@ export default async (event): Promise<any> => {
 
 		if (!input.appVersion) {
 			console.log('old version, not doing anything');
-			return;
+			return {
+				statusCode: 422,
+				isBase64Encoded: false,
+				body: 'old version ' + input.appVersion,
+				headers: headers,
+			};
 		}
 
-		if (input.chosenLootIndex === -1) {
+		if (input.chosenLootIndex === -1 && input.chosenTreasureIndex === -1 && !input.rewards?.Rewards?.length) {
 			console.log('invalid option choice', input);
-			return;
+			return {
+				statusCode: 422,
+				isBase64Encoded: false,
+				body: 'invalid option choice ',
+				headers: headers,
+			};
 		}
 
 		const mysqlBgs = await getConnection();
