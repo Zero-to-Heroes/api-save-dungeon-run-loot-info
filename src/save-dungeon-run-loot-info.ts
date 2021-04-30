@@ -14,74 +14,56 @@ export default async (event): Promise<any> => {
 		'Access-Control-Allow-Methods': 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT',
 		'Access-Control-Allow-Origin': event.headers.Origin || event.headers.origin,
 	};
-	try {
-		// console.log('processing event');
-		// Preflight
-		if (!event.body) {
-			const response = {
-				statusCode: 200,
-				body: null,
-				headers: headers,
-			};
-			// console.log('sending back success response without body', response);
-			return response;
-		}
-
-		const input: Input = JSON.parse(event.body);
-
-		if (input.userName === 'daedin') {
-			console.log('DEBUG daedin');
-		}
-
-		if (!input.appVersion) {
-			console.log('old version, not doing anything');
-			return {
-				statusCode: 422,
-				isBase64Encoded: false,
-				body: 'old version ' + input.appVersion,
-				headers: headers,
-			};
-		}
-
-		if (input.chosenLootIndex === -1 && input.chosenTreasureIndex === -1 && !input.rewards?.Rewards?.length) {
-			console.log('invalid option choice', input);
-			return {
-				statusCode: 422,
-				isBase64Encoded: false,
-				body: 'invalid option choice ',
-				headers: headers,
-			};
-		}
-
-		const mysqlBgs = await getConnection();
-		const creationDate = formatDate(new Date());
-		await saveStartingHeroPower(input, creationDate, mysqlBgs);
-		await saveSignatureTreasure(input, creationDate, mysqlBgs);
-		await saveLootBundles(input, creationDate, mysqlBgs);
-		await saveTreasures(input, creationDate, mysqlBgs);
-		await saveRewards(input, creationDate, mysqlBgs);
-		await mysqlBgs.end();
-
+	// Preflight
+	if (!event.body) {
 		const response = {
 			statusCode: 200,
-			body: '',
-			headers: headers,
-		};
-
-		// console.log('sending back success reponse', response);
-
-		return response;
-	} catch (e) {
-		console.error('issue saving sample', e);
-		const response = {
-			statusCode: 500,
-			isBase64Encoded: false,
 			body: null,
 			headers: headers,
 		};
-		console.log('sending back error reponse', response);
 		return response;
 	}
+
+	const input: Input = JSON.parse(event.body);
+
+	if (input.userName === 'daedin') {
+	}
+
+	if (!input.appVersion) {
+		return {
+			statusCode: 422,
+			isBase64Encoded: false,
+			body: 'old version ' + input.appVersion,
+			headers: headers,
+		};
+	}
+
+	if (input.chosenLootIndex === -1 && input.chosenTreasureIndex === -1 && !input.rewards?.Rewards?.length) {
+		return {
+			statusCode: 422,
+			isBase64Encoded: false,
+			body: 'invalid option choice ',
+			headers: headers,
+		};
+	}
+
+	const mysqlBgs = await getConnection();
+	const creationDate = formatDate(new Date());
+	await saveStartingHeroPower(input, creationDate, mysqlBgs);
+	await saveSignatureTreasure(input, creationDate, mysqlBgs);
+	await saveLootBundles(input, creationDate, mysqlBgs);
+	await saveTreasures(input, creationDate, mysqlBgs);
+	await saveRewards(input, creationDate, mysqlBgs);
+	await mysqlBgs.end();
+
+	const response = {
+		statusCode: 200,
+		body: '',
+		headers: headers,
+	};
+
+
+	return response;
 };
 
 const saveStartingHeroPower = async (input: Input, creationDate: string, mysqlBgs): Promise<void> => {
@@ -115,9 +97,7 @@ const saveStartingHeroPower = async (input: Input, creationDate: string, mysqlBg
 				LIMIT 1
 			)				
 		`;
-		// console.log('running query', query);
 		await mysqlBgs.query(query);
-		// console.log('executed query');
 	}
 };
 
@@ -152,7 +132,6 @@ const saveSignatureTreasure = async (input: Input, creationDate: string, mysqlBg
 				LIMIT 1
 			)				
 		`;
-		// console.log('running query', query);
 		await mysqlBgs.query(query);
 	}
 };
@@ -194,7 +173,6 @@ const saveLootBundles = async (input: Input, creationDate: string, mysqlBgs): Pr
 			)
 			
 		`;
-		// console.log('running query', query);
 		await mysqlBgs.query(query);
 	}
 };
@@ -232,7 +210,6 @@ const saveTreasures = async (input: Input, creationDate: string, mysqlBgs): Prom
 				LIMIT 1
 			)
 		`;
-		// console.log('running query', query);
 		await mysqlBgs.query(query);
 	}
 };
@@ -240,7 +217,6 @@ const saveTreasures = async (input: Input, creationDate: string, mysqlBgs): Prom
 const saveRewards = async (input: Input, creationDate: string, mysqlBgs): Promise<void> => {
 	const escape = SqlString.escape;
 	if (input.rewards?.Rewards?.length) {
-		// console.log('rewards', input.rewards, input);
 		const values = input.rewards.Rewards.map(
 			reward =>
 				`(
