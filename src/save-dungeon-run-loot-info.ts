@@ -24,6 +24,7 @@ export default async (event): Promise<any> => {
 		return response;
 	}
 
+	console.log('parsing input', event.body);
 	const input: Input = JSON.parse(event.body);
 
 	if (input.userName === 'daedin') {
@@ -47,6 +48,7 @@ export default async (event): Promise<any> => {
 		};
 	}
 
+	// TODO: add current class / hero in DB for stats
 	const mysqlBgs = await getConnection();
 	const creationDate = formatDate(new Date());
 	await saveStartingHeroPower(input, creationDate, mysqlBgs);
@@ -61,7 +63,6 @@ export default async (event): Promise<any> => {
 		body: '',
 		headers: headers,
 	};
-
 
 	return response;
 };
@@ -217,9 +218,11 @@ const saveTreasures = async (input: Input, creationDate: string, mysqlBgs): Prom
 const saveRewards = async (input: Input, creationDate: string, mysqlBgs): Promise<void> => {
 	const escape = SqlString.escape;
 	if (input.rewards?.Rewards?.length) {
-		const values = input.rewards.Rewards.map(
-			reward =>
-				`(
+		console.log('saving rewards', input.rewards.Rewards);
+		const values = input.rewards.Rewards.filter(reward => !!reward)
+			.map(
+				reward =>
+					`(
 					${escape(input.type)}, 
 					${escape(creationDate)}, 
 					${escape(input.reviewId)}, 
@@ -233,7 +236,8 @@ const saveRewards = async (input: Input, creationDate: string, mysqlBgs): Promis
 					${escape(input.currentLosses)}, 
 					${escape(input.rating)}
 				)`,
-		).join('\n,');
+			)
+			.join('\n,');
 
 		const query = `
 			INSERT INTO dungeon_run_rewards
