@@ -80,8 +80,8 @@ const saveStartingHeroPower = async (input: Input, creationDate: string, mysqlBg
 			'hero-power', 
 			${escape(input.startingHeroPower)}, 
 			1, 
-			${escape(input.currentWins)}, 
-			${escape(input.currentLosses)}, 
+			0, 
+			0, 
 			${escape(input.rating)}
 		`;
 		// https://stackoverflow.com/questions/1361340/how-to-insert-if-not-exists-in-mysql
@@ -115,8 +115,8 @@ const saveSignatureTreasure = async (input: Input, creationDate: string, mysqlBg
 			'signature-treasure', 
 			${escape(input.signatureTreasure)}, 
 			1, 
-			${escape(input.currentWins)}, 
-			${escape(input.currentLosses)}, 
+			0,
+			0,
 			${escape(input.rating)}
 		`;
 		// https://stackoverflow.com/questions/1361340/how-to-insert-if-not-exists-in-mysql
