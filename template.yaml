@@ -19,13 +19,6 @@ Resources:
             MemorySize: 128
             ReservedConcurrentExecutions: 40
             CodeUri: ./dist/save-dungeon-run-loot-info
-            # https://stackoverflow.com/questions/39144688/aws-lambda-invoke-not-calling-another-lambda-function-node-js
-            # VpcConfig:
-            #     SecurityGroupIds:
-            #         - sg-0ed63616362bf1a30
-            #     SubnetIds:
-            #         - subnet-0b36da5c19637a351
-            #         - subnet-0b730ca9af74a95dd
             Policies:
                 - AWSLambdaVPCAccessExecutionRole
                 - AmazonSESFullAccess
@@ -39,6 +32,25 @@ Resources:
                     Properties:
                         Path: /{proxy+}
                         Method: any
+    SaveDungeonRunLootInfoFunction2:
+        Type: AWS::Serverless::Function
+        Properties:
+            Handler: save-dungeon-run-loot-info.default
+            Runtime: nodejs16.x
+            CodeUri: ./dist/save-dungeon-run-loot-info
+            Timeout: 30
+            MemorySize: 128
+            ReservedConcurrentExecutions: 40
+            Policies:
+                - AWSLambdaVPCAccessExecutionRole
+                - SecretsManagerReadWrite
+                - AmazonSESFullAccess
+                # - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+            Tags:
+                LambdaName: api-save-dungeon-run-loot-info-2
+            AutoPublishAlias: live
+            FunctionUrlConfig:
+                AuthType: NONE
 
 Outputs:
     SaveDungeonRunLootInfoApi:

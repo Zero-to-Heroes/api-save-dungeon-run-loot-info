@@ -27,9 +27,6 @@ export default async (event): Promise<any> => {
 	console.log('parsing input', event.body);
 	const input: Input = JSON.parse(event.body);
 
-	if (input.userName === 'daedin') {
-	}
-
 	if (!input.appVersion) {
 		return {
 			statusCode: 422,
