@@ -4,34 +4,34 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: API endpoint to save dungeon run loot info
 
-Globals:
-    Api:
-        # API Gateway regional endpoints
-        EndpointConfiguration: EDGE
+# Globals:
+#     Api:
+#         # API Gateway regional endpoints
+#         EndpointConfiguration: EDGE
 
 Resources:
-    SaveDungeonRunLootInfoFunction:
-        Type: AWS::Serverless::Function
-        Properties:
-            Handler: save-dungeon-run-loot-info.default
-            Runtime: nodejs12.x
-            Timeout: 30
-            MemorySize: 128
-            ReservedConcurrentExecutions: 40
-            CodeUri: ./dist/save-dungeon-run-loot-info
-            Policies:
-                - AWSLambdaVPCAccessExecutionRole
-                - AmazonSESFullAccess
-                - SecretsManagerReadWrite
-                # - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
-            Tags:
-                LambdaName: api-save-dungeon-run-loot-info
-            Events:
-                SaveDungeonRunLootInfoResource:
-                    Type: Api
-                    Properties:
-                        Path: /{proxy+}
-                        Method: any
+    # SaveDungeonRunLootInfoFunction:
+    #     Type: AWS::Serverless::Function
+    #     Properties:
+    #         Handler: save-dungeon-run-loot-info.default
+    #         Runtime: nodejs12.x
+    #         Timeout: 30
+    #         MemorySize: 128
+    #         ReservedConcurrentExecutions: 40
+    #         CodeUri: ./dist/save-dungeon-run-loot-info
+    #         Policies:
+    #             - AWSLambdaVPCAccessExecutionRole
+    #             - AmazonSESFullAccess
+    #             - SecretsManagerReadWrite
+    #             # - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+    #         Tags:
+    #             LambdaName: api-save-dungeon-run-loot-info
+    #         Events:
+    #             SaveDungeonRunLootInfoResource:
+    #                 Type: Api
+    #                 Properties:
+    #                     Path: /{proxy+}
+    #                     Method: any
     SaveDungeonRunLootInfoFunction2:
         Type: AWS::Serverless::Function
         Properties:
@@ -52,9 +52,9 @@ Resources:
             FunctionUrlConfig:
                 AuthType: NONE
 
-Outputs:
-    SaveDungeonRunLootInfoApi:
-        Description: URL to save dungeon run loot info
-        Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
-        Export:
-            Name: SaveDungeonRunLootInfoApi
+# Outputs:
+#     SaveDungeonRunLootInfoApi:
+#         Description: URL to save dungeon run loot info
+#         Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
+#         Export:
+#             Name: SaveDungeonRunLootInfoApi
