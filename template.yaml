@@ -9,19 +9,19 @@ Resources:
         Type: AWS::Serverless::Function
         Properties:
             Handler: save-dungeon-run-loot-info.default
-            Runtime: nodejs16.x
+            Runtime: nodejs18.x
             CodeUri: ./dist/save-dungeon-run-loot-info
             Timeout: 30
             MemorySize: 128
             ReservedConcurrentExecutions: 40
-            Layers:
-                - !Sub "arn:aws:lambda:${AWS::Region}:580247275435:layer:LambdaInsightsExtension:14"
+            # Layers:
+            #     - !Sub "arn:aws:lambda:${AWS::Region}:580247275435:layer:LambdaInsightsExtension:14"
             Policies:
                 - AWSLambdaVPCAccessExecutionRole
                 - SecretsManagerReadWrite
                 - AmazonSESFullAccess
                 - arn:aws:iam::aws:policy/CloudWatchLambdaInsightsExecutionRolePolicy
-                # - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
+                - arn:aws:iam::478062583808:policy/CloudWatchPolicyForLambda # See https://stackoverflow.com/questions/51166504/disable-cloudwatch-to-monitor-logs-for-lambda-function
             Tags:
                 LambdaName: api-save-dungeon-run-loot-info-2
             AutoPublishAlias: live
